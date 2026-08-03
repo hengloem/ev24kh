@@ -1,34 +1,94 @@
-<div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200"
->
-  <div class="text-center">
-    <!-- TODO: replace everything here with the actual app! -->
-    <h1
-      class="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3"
-    >
-      <svg class="animate-spin h-8 w-8 text-slate-400" viewBox="0 0 50 50">
-        <circle
-          class="opacity-30"
-          cx="25"
-          cy="25"
-          r="20"
-          stroke="currentColor"
-          stroke-width="5"
-          fill="none"
-        />
-        <circle
-          class="text-slate-600"
-          cx="25"
-          cy="25"
-          r="20"
-          stroke="currentColor"
-          stroke-width="5"
-          fill="none"
-          stroke-dasharray="100"
-          stroke-dashoffset="75"
-        />
-      </svg>
-      Generating your app...
-    </h1>
-  </div>
+<div class="site-shell">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Ev24 Kh home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>ev24<span class="brand-accent">kh</span></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#routes">Routes</a>
+        <a href="#services">Services</a>
+        <a href="#drivers">For drivers</a>
+        <a href="#about">About us</a>
+      </nav>
+      <div class="header-actions">
+        <a class="call-link" href="tel:+85512345678"><span class="phone-icon">⌕</span> +855 12 345 678</a>
+        <a class="button button-small button-light" href="#booking">Book a ride <span>↗</span></a>
+        <button class="menu-button" type="button" aria-label="Toggle menu" (click)="menuOpen.set(!menuOpen())">☰</button>
+      </div>
+    </div>
+    @if (menuOpen()) {
+      <nav class="mobile-nav container" aria-label="Mobile navigation">
+        <a href="#routes" (click)="menuOpen.set(false)">Routes</a>
+        <a href="#services" (click)="menuOpen.set(false)">Services</a>
+        <a href="#drivers" (click)="menuOpen.set(false)">For drivers</a>
+        <a href="#about" (click)="menuOpen.set(false)">About us</a>
+      </nav>
+    }
+  </header>
+
+  <main id="top">
+    <section class="hero-section">
+      <div class="hero-image"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="eyebrow light-eyebrow"><span class="eyebrow-dot"></span> Cambodia's private ride, reimagined</div>
+        <h1>Go further.<br /><em>Go your way.</em></h1>
+        <p class="hero-copy">Private, long-distance journeys across Cambodia.<br />Your car. Your time. Your way.</p>
+        <a class="button button-primary" href="#booking">Plan your journey <span>↗</span></a>
+        <div class="hero-trust"><span class="avatar-stack"><i>KH</i><i>24</i><i>+</i></span><span>Trusted by 2,000+ travelers across Cambodia</span></div>
+      </div>
+      <div class="hero-scroll"><span class="scroll-line"></span> Scroll to explore</div>
+    </section>
+
+    <section id="booking" class="booking-wrap container">
+      <div class="booking-card">
+        <div class="booking-heading"><span class="section-kicker">01 / BOOK A RIDE</span><h2>Where are you going?</h2><p>Tell us your route and we'll match you with the right private car.</p></div>
+        <form class="booking-form" (ngSubmit)="submitBooking()">
+          <label class="field"><span>Pick-up location</span><div class="input-wrap"><span class="field-icon">⌖</span><input name="pickup" [ngModel]="pickup()" (ngModelChange)="pickup.set($event)" placeholder="Phnom Penh" /></div></label>
+          <label class="field"><span>Destination</span><div class="input-wrap"><span class="field-icon">⌖</span><select name="destination" [ngModel]="selectedRoute()" (ngModelChange)="selectedRoute.set($event)">@for (route of routes; track route.to) {<option [value]="route.to">{{ route.to }}</option>}</select><span class="select-arrow">⌄</span></div></label>
+          <label class="field"><span>Travel date</span><div class="input-wrap"><span class="field-icon">▣</span><input name="date" type="date" /></div></label>
+          <label class="field"><span>Passengers</span><div class="input-wrap"><span class="field-icon">♙</span><select name="passengers"><option>1 passenger</option><option>2 passengers</option><option>3 passengers</option><option>4+ passengers</option></select><span class="select-arrow">⌄</span></div></label>
+          <button class="button button-dark" type="submit">Check availability <span>→</span></button>
+        </form>
+        @if (bookingSent()) {
+          <div class="booking-success" role="status"><strong>Request received.</strong> We'll call you shortly to confirm your {{ selectedRouteDetails.to }} journey. <button type="button" (click)="closeBookingNotice()">×</button></div>
+        }
+      </div>
+    </section>
+
+    <section id="routes" class="section container route-section">
+      <div class="section-top"><div><span class="section-kicker">02 / SIGNATURE ROUTES</span><h2>See Cambodia<br /><em>without the rush.</em></h2></div><p>Long-range routes, fixed fares, and a local driver who knows every turn. No surprises — just the open road.</p></div>
+      <div class="route-grid">
+        @for (route of routes; track route.to) {
+          <button class="route-card" type="button" (click)="chooseRoute(route.to)" [class.route-card-active]="selectedRoute() === route.to">
+            @if (route.tag) { <span class="route-tag">{{ route.tag }}</span> }
+            <div class="route-head"><span>{{ route.from }}</span><span class="route-arrow">→</span><span>{{ route.to }}</span></div>
+            <div class="route-meta"><span>{{ route.distance }} <b>·</b> {{ route.duration }}</span><strong>${{ route.price }}</strong></div>
+          </button>
+        }
+      </div>
+      <p class="route-note"><span>↗</span> Need a different destination? <a href="#booking">We'll calculate your fare by kilometer.</a></p>
+    </section>
+
+    <section id="services" class="services-section">
+      <div class="container service-layout">
+        <div class="service-copy"><span class="section-kicker">03 / MORE THAN A RIDE</span><h2>Your time.<br /><em>Your itinerary.</em></h2><p>Make the most of the journey. Keep your private driver by the hour for the things that make a trip unforgettable.</p><a href="#booking" class="text-link">Explore add-on services <span>↗</span></a></div>
+        <div class="service-cards">
+          <article class="service-card"><div class="service-icon">⌂</div><h3>Stay & settle in</h3><p>Need a hand with accommodation? Your driver can help you find your footing.</p><span>From $30 / hour</span></article>
+          <article class="service-card service-card-featured"><div class="service-icon">✦</div><h3>Make it yours</h3><p>Fishing, local food, hidden temples, or a day on your terms. Just ask.</p><span>From $30 / hour</span></article>
+          <article class="service-card"><div class="service-icon">◌</div><h3>Extra time, easy</h3><p>Extend your trip or add a stop. Your driver, your pace, no awkward clock-watching.</p><span>From $30 / hour</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="drivers" class="driver-section container">
+      <div class="driver-panel"><div class="driver-text"><span class="section-kicker">04 / DRIVE WITH EV24 KH</span><h2>Bring your<br /><em>best work.</em></h2><p>Join a network built for drivers who care about the ride. Keep your independence, meet great people, and earn on your terms.</p><div class="driver-points"><span><b>01</b> Monthly subscription: $100</span><span><b>02</b> More control, better passengers</span><span><b>03</b> Support that has your back</span></div><a href="#driver-form" class="button button-primary">Register as a driver <span>↗</span></a></div><div class="driver-visual"><div class="driver-badge"><strong>24</strong><span>hours<br />a day</span></div><div class="driver-quote">“The road is yours.<br />We just open the door.”</div></div></div>
+    </section>
+
+    <section id="about" class="final-cta container"><span class="section-kicker">05 / READY WHEN YOU ARE</span><h2>The long way<br /><em>is the good way.</em></h2><a class="button button-dark" href="#booking">Book your private ride <span>↗</span></a></section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>ev24<span class="brand-accent">kh</span></span></a><p>Private long-distance travel,<br />across Cambodia.</p><div class="footer-links"><a href="#routes">Routes</a><a href="#services">Services</a><a href="#drivers">For drivers</a></div><span class="copyright">© 2024 Ev24 Kh</span></div></footer>
+  <router-outlet></router-outlet>
 </div>
