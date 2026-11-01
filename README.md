@@ -1,59 +1,86 @@
-# FusionAngularTailwindStarter
+# Ev24 Kh
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.2.
+Ev24 Kh is a private, long-distance taxi booking site for Cambodia. Passengers can request a private car for intercity trips, and drivers can register to join the network.
 
-## Development server
+The app is a single-page Angular 20 application styled with Tailwind CSS 3.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- Hero section with brand introduction and call to action
+- Booking form with pickup, destination, travel date, and passenger count
+- Fixed-fare signature routes from Phnom Penh, with distance and duration for each
+- Add-on driver services (from $30 per hour)
+- Driver registration section ($100 per month subscription)
+- Responsive navigation with a mobile menu
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech stack
 
-## Code scaffolding
+- Angular 20 (standalone components, signals)
+- TypeScript
+- Tailwind CSS 3.4 with the Typography plugin
+- Angular CLI and Karma/Jasmine for tests
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Getting started
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Install dependencies:
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Start the development server:
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Then open `http://localhost:4200/`. The app reloads when source files change.
 
-For end-to-end (e2e) testing, run:
+## Scripts
 
-```bash
-ng e2e
+| Command         | Purpose                                      |
+| --------------- | -------------------------------------------- |
+| `npm start`     | Run the development server                   |
+| `npm run build` | Create a production build in `dist/`         |
+| `npm run watch` | Rebuild on change in development mode        |
+| `npm test`      | Run unit tests with Karma (requires Chrome)  |
+
+## Project structure
+
+```
+src/
+├── app/
+│   ├── app.ts          # Root component: booking state, routes data, handlers
+│   ├── app.html        # Homepage markup
+│   ├── app.css         # Component styles and responsive breakpoints
+│   ├── app.config.ts   # Application providers
+│   ├── app.routes.ts   # Route definitions
+│   └── app.spec.ts     # Root component tests
+├── styles.css          # Tailwind directives, fonts, and global base styles
+├── index.html          # HTML entry point
+└── main.ts             # Application bootstrap
+tailwind.config.js      # Brand colors and font families
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Brand tokens
 
-## Additional Resources
+Defined in `tailwind.config.js` under the `ev` color group:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Token        | Hex       | Use                      |
+| ------------ | --------- | ------------------------ |
+| `ev-ink`     | `#1c2a2a` | Primary text, dark buttons |
+| `ev-forest`  | `#1d3736` | Service and mobile nav backgrounds |
+| `ev-lime`    | `#c4d849` | Accents, primary buttons |
+| `ev-paper`   | `#f3f0e9` | Page background          |
+| `ev-cream`   | `#f8f6ee` | Light surfaces           |
+
+Display headings use DM Serif Display, and body text uses Manrope.
+
+## Routes and fares
+
+Long-range fares are defined in `src/app/app.ts`. Each route has a fixed price in USD, and only the listed destinations are accepted. Rides inside Phnom Penh are priced by kilometer.
+
+## Additional resources
+
+- [Angular CLI overview](https://angular.dev/tools/cli)
+- [Tailwind CSS documentation](https://tailwindcss.com/docs)
