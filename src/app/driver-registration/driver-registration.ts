@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 
 interface DriverApplication {
   fullName: string;
@@ -31,6 +32,11 @@ export class DriverRegistrationComponent {
   ];
 
   protected application: DriverApplication = this.emptyApplication();
+
+  constructor() {
+    inject(Title).setTitle('Register as a driver — Ev24 Kh');
+    inject(Meta).updateTag({ name: 'description', content: 'Join Ev24 Kh as a private long-distance driver. Membership is $100 per month.' });
+  }
 
   protected submit(): void {
     this.submitted.set(true);
