@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 type Theme = 'light' | 'dark';
 
@@ -18,7 +20,7 @@ interface RouteOption {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -29,6 +31,20 @@ export class App {
   protected readonly passengerName = signal('');
   protected readonly pickup = signal('Phnom Penh');
   protected readonly theme = signal<Theme>(this.initialTheme());
+  protected readonly activeSlide = signal(0);
+  protected readonly heroSlides = [
+    'https://images.pexels.com/photos/29082604/pexels-photo-29082604.jpeg'
+  ];
+
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  protected readonly isHome = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map(event => event.urlAfterRedirects === '/')
+    ),
+    { initialValue: true }
+  );
 
   protected readonly routes: RouteOption[] = [
     { from: 'Phnom Penh', to: 'Siem Reap', price: 150, duration: '5h 30m', distance: '320 km', tag: 'Most booked' },
@@ -48,6 +64,11 @@ export class App {
       document.documentElement.dataset['theme'] = this.theme();
       localStorage.setItem(THEME_STORAGE_KEY, this.theme());
     });
+
+    if (this.heroSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const timer = setInterval(() => this.activeSlide.update(i => (i + 1) % this.heroSlides.length), 6000);
+      this.destroyRef.onDestroy(() => clearInterval(timer));
+    }
   }
 
   protected toggleTheme(): void {

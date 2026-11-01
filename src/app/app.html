@@ -29,9 +29,12 @@
     }
   </header>
 
+  @if (isHome()) {
   <main id="top">
     <section class="hero-section">
-      <div class="hero-image"></div>
+      @for (slide of heroSlides; track slide; let i = $index) {
+        <div class="hero-image" aria-hidden="true" [class.is-active]="i === activeSlide()" [style.background-image]="'url(' + slide + ')'"></div>
+      }
       <div class="hero-overlay"></div>
       <div class="container hero-content">
         <div class="eyebrow light-eyebrow"><span class="eyebrow-dot"></span> Cambodia's private ride, reimagined</div>
@@ -85,12 +88,13 @@
     </section>
 
     <section id="drivers" class="driver-section container">
-      <div class="driver-panel"><div class="driver-text"><span class="section-kicker">04 / DRIVE WITH EV24 KH</span><h2>Bring your<br /><em>best work.</em></h2><p>Join a network built for drivers who care about the ride. Keep your independence, meet great people, and earn on your terms.</p><div class="driver-points"><span><b>01</b> Monthly subscription: $100</span><span><b>02</b> More control, better passengers</span><span><b>03</b> Support that has your back</span></div><a href="#driver-form" class="button button-primary">Register as a driver <span>↗</span></a></div><div class="driver-visual"><div class="driver-badge"><strong>24</strong><span>hours<br />a day</span></div><div class="driver-quote">“The road is yours.<br />We just open the door.”</div></div></div>
+      <div class="driver-panel"><div class="driver-text"><span class="section-kicker">04 / DRIVE WITH EV24 KH</span><h2>Bring your<br /><em>best work.</em></h2><p>Join a network built for drivers who care about the ride. Keep your independence, meet great people, and earn on your terms.</p><div class="driver-points"><span><b>01</b> Monthly subscription: $100</span><span><b>02</b> More control, better passengers</span><span><b>03</b> Support that has your back</span></div><a routerLink="/register-driver" class="button button-primary">Register as a driver <span>↗</span></a></div><div class="driver-visual"><div class="driver-badge"><strong>24</strong><span>hours<br />a day</span></div><div class="driver-quote">“The road is yours.<br />We just open the door.”</div></div></div>
     </section>
 
     <section id="about" class="final-cta container"><span class="section-kicker">05 / READY WHEN YOU ARE</span><h2>The long way<br /><em>is the good way.</em></h2><a class="button button-dark" href="#booking">Book your private ride <span>↗</span></a></section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>ev24<span class="brand-accent">kh</span></span></a><p>Private long-distance travel,<br />across Cambodia.</p><div class="footer-links"><a href="#routes">Routes</a><a href="#services">Services</a><a href="#drivers">For drivers</a></div><span class="copyright">© 2024 Ev24 Kh</span></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>ev24<span class="brand-accent">kh</span></span></a><p>Private long-distance travel,<br />across Cambodia.</p><div class="footer-links"><a href="#routes">Routes</a><a href="#services">Services</a><a href="#drivers">For drivers</a><a routerLink="/privacy">Privacy</a><a routerLink="/terms">Terms</a><a routerLink="/refund">Refunds</a></div><span class="copyright">© 2024 Ev24 Kh</span></div></footer>
+  }
   <router-outlet></router-outlet>
 </div>

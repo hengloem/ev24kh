@@ -1,0 +1,103 @@
+<section class="driver-hero">
+  <div class="container driver-hero-inner">
+    <span class="section-kicker">DRIVE WITH EV24 KH</span>
+    <h1>Drive with<br /><em>Ev24 Kh.</em></h1>
+    <p>Join a network built for drivers who care about the ride. Keep your independence and earn on long-distance private trips.</p>
+  </div>
+</section>
+
+<section class="container driver-page">
+  <div class="driver-layout">
+    <aside class="driver-aside">
+      <div class="plan-card">
+        <span class="section-kicker">MEMBERSHIP</span>
+        <div class="plan-price"><strong>$100</strong><span>/ month</span></div>
+        <p>A simple monthly subscription. No commission on your fares.</p>
+        <ul>
+          <li>Access to private long-distance bookings</li>
+          <li>Choose the routes you want to drive</li>
+          <li>Support team that has your back</li>
+        </ul>
+      </div>
+
+      <ol class="steps">
+        @for (step of steps; track step.title; let i = $index) {
+          <li><span>{{ i + 1 }}</span><div><h3>{{ step.title }}</h3><p>{{ step.text }}</p></div></li>
+        }
+      </ol>
+    </aside>
+
+    <div class="form-card">
+      @if (!submitted()) {
+        <h2>Driver application</h2>
+        <p class="form-intro">Takes about five minutes. Required fields are marked.</p>
+
+        <form #driverForm="ngForm" (ngSubmit)="submit()" class="driver-form">
+          <div class="form-grid">
+            <label class="field">Full name *
+              <input name="fullName" [(ngModel)]="application.fullName" required />
+            </label>
+            <label class="field">Phone *
+              <input name="phone" type="tel" [(ngModel)]="application.phone" required placeholder="+855" />
+            </label>
+            <label class="field">Email *
+              <input name="email" type="email" [(ngModel)]="application.email" required />
+            </label>
+            <label class="field">City *
+              <select name="city" [(ngModel)]="application.city" required>
+                @for (city of cities; track city) {
+                  <option [value]="city">{{ city }}</option>
+                }
+              </select>
+            </label>
+            <label class="field">Years of driving *
+              <input name="yearsDriving" type="number" min="0" max="60" [(ngModel)]="application.yearsDriving" required />
+            </label>
+            <label class="field">Driver license number *
+              <input name="licenseNumber" [(ngModel)]="application.licenseNumber" required />
+            </label>
+            <label class="field">Vehicle make & model *
+              <input name="vehicleMake" [(ngModel)]="application.vehicleMake" required />
+            </label>
+            <label class="field">Vehicle year *
+              <input name="vehicleYear" type="number" min="1990" max="2030" [(ngModel)]="application.vehicleYear" required />
+            </label>
+            <label class="field field-wide">License plate *
+              <input name="plate" [(ngModel)]="application.plate" required />
+            </label>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" name="agreed" [(ngModel)]="application.agreed" required />
+            <span>I agree to the driver terms and understand the $100 monthly subscription.</span>
+          </label>
+
+          <button class="button button-primary submit" type="submit" [disabled]="driverForm.invalid">
+            Submit application <span>↗</span>
+          </button>
+        </form>
+      } @else {
+        <div class="success">
+          <h2>Thank you, {{ application.fullName }}.</h2>
+          <p>We received your application and will contact you at {{ application.email }} within two business days.</p>
+          <div class="success-actions">
+            <a class="button button-primary" routerLink="/">Back to home</a>
+            <button class="text-action" type="button" (click)="reset()">Submit another</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<footer class="driver-footer">
+  <div class="container driver-footer-inner">
+    <a routerLink="/">Ev24 Kh home</a>
+    <nav aria-label="Policy pages">
+      <a routerLink="/privacy">Privacy</a>
+      <a routerLink="/terms">Terms</a>
+      <a routerLink="/refund">Refunds</a>
+    </nav>
+    <span>© 2024 Ev24 Kh</span>
+  </div>
+</footer>

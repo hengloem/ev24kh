@@ -1,0 +1,31 @@
+<section class="legal-hero">
+  <div class="container">
+    <span class="section-kicker">LEGAL</span>
+    <h1>{{ policy.title }}</h1>
+    <p>{{ policy.intro }}</p>
+    <span class="updated">Last updated: {{ lastUpdated }}</span>
+  </div>
+</section>
+
+<article class="container legal-body">
+  @for (section of policy.sections; track section.heading) {
+    <section>
+      <h2>{{ section.heading }}</h2>
+      @for (paragraph of section.paragraphs; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+    </section>
+  }
+</article>
+
+<footer class="legal-footer">
+  <div class="container legal-footer-inner">
+    <a routerLink="/">Ev24 Kh home</a>
+    <nav aria-label="Policy pages">
+      <a routerLink="/privacy">Privacy</a>
+      <a routerLink="/terms">Terms</a>
+      <a routerLink="/refund">Refunds</a>
+    </nav>
+    <span>© 2024 Ev24 Kh</span>
+  </div>
+</footer>
