@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+
+type Theme = 'light' | 'dark';
+
+const THEME_STORAGE_KEY = 'ev24kh-theme';
 
 interface RouteOption {
   from: string;
@@ -24,6 +28,7 @@ export class App {
   protected readonly selectedRoute = signal('Siem Reap');
   protected readonly passengerName = signal('');
   protected readonly pickup = signal('Phnom Penh');
+  protected readonly theme = signal<Theme>(this.initialTheme());
 
   protected readonly routes: RouteOption[] = [
     { from: 'Phnom Penh', to: 'Siem Reap', price: 150, duration: '5h 30m', distance: '320 km', tag: 'Most booked' },
@@ -37,6 +42,25 @@ export class App {
     { from: 'Phnom Penh', to: 'Ratanakiri', price: 250, duration: '8h 30m', distance: '570 km' },
     { from: 'Phnom Penh', to: 'Pursat', price: 180, duration: '4h 15m', distance: '190 km' }
   ];
+
+  constructor() {
+    effect(() => {
+      document.documentElement.dataset['theme'] = this.theme();
+      localStorage.setItem(THEME_STORAGE_KEY, this.theme());
+    });
+  }
+
+  protected toggleTheme(): void {
+    this.theme.update(current => (current === 'dark' ? 'light' : 'dark'));
+  }
+
+  private initialTheme(): Theme {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark') {
+      return saved;
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
 
   protected get selectedRouteDetails(): RouteOption {
     return this.routes.find(route => route.to === this.selectedRoute()) ?? this.routes[0];

@@ -7,3 +7,4 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #f3f0e9; font-family: 'Manrope', sans-serif; -webkit-font-smoothing: antialiased; }
 button, input, select { font-family: inherit; }
+html[data-theme='dark'] body { background: #0e1817; }
