@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, HostListener, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -85,6 +85,18 @@ export class App {
 
   protected get selectedRouteDetails(): RouteOption {
     return this.routes.find(route => route.to === this.selectedRoute()) ?? this.routes[0];
+  }
+
+  @HostListener('click', ['$event'])
+  protected onSectionLinkClick(event: MouseEvent): void {
+    const link = (event.target as Element).closest('a[href^="#"]');
+    if (!link) {
+      return;
+    }
+    event.preventDefault();
+    const id = link.getAttribute('href')!.slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.menuOpen.set(false);
   }
 
   protected chooseRoute(destination: string): void {
