@@ -41,7 +41,7 @@ export class App {
   protected readonly isHome = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(event => event.urlAfterRedirects === '/')
+      map(event => event.urlAfterRedirects === '/home')
     ),
     { initialValue: true }
   );
@@ -100,7 +100,7 @@ export class App {
     if (this.isHome()) {
       this.scrollToSection(id);
     } else {
-      void this.router.navigateByUrl('/').then(() => setTimeout(() => this.scrollToSection(id)));
+      void this.router.navigateByUrl('/home').then(() => setTimeout(() => this.scrollToSection(id)));
     }
   }
 

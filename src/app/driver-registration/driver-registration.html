@@ -81,7 +81,7 @@
           <h2>Thank you, {{ application.fullName }}.</h2>
           <p>We received your application and will contact you at {{ application.email }} within two business days.</p>
           <div class="success-actions">
-            <a class="button button-primary" routerLink="/">Back to home</a>
+            <a class="button button-primary" routerLink="/home">Back to home</a>
             <button class="text-action" type="button" (click)="reset()">Submit another</button>
           </div>
         </div>
@@ -92,7 +92,7 @@
 
 <footer class="driver-footer">
   <div class="container driver-footer-inner">
-    <a routerLink="/">Ev24 Kh home</a>
+    <a routerLink="/home">Ev24 Kh home</a>
     <nav aria-label="Policy pages">
       <a routerLink="/privacy">Privacy</a>
       <a routerLink="/terms">Terms</a>
