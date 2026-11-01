@@ -89,14 +89,23 @@ export class App {
 
   @HostListener('click', ['$event'])
   protected onSectionLinkClick(event: MouseEvent): void {
-    const link = (event.target as Element).closest('a[href^="#"]');
+    const link = (event.target as Element).closest('a[href^="#"]:not([href^="#/"])');
     if (!link) {
       return;
     }
     event.preventDefault();
     const id = link.getAttribute('href')!.slice(1);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     this.menuOpen.set(false);
+
+    if (this.isHome()) {
+      this.scrollToSection(id);
+    } else {
+      void this.router.navigateByUrl('/').then(() => setTimeout(() => this.scrollToSection(id)));
+    }
+  }
+
+  private scrollToSection(id: string): void {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   protected chooseRoute(destination: string): void {
