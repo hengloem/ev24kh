@@ -31,7 +31,7 @@
   .desktop-nav { display: none; }
   .header-actions { margin-left: auto; }
   .menu-button { display: block; }
-  .mobile-nav { display: flex; flex-direction: column; gap: 14px; padding: 20px 24px; background: #1d3736; }
+  .mobile-nav { display: flex; flex-direction: column; gap: 14px; padding: 20px 24px 24px; background: #1d3736; border-top: 1px solid rgba(255,255,255,.18); }
   .mobile-nav a { font-size: 14px; opacity: 1; }
   .mobile-nav .mobile-cta { display: flex; justify-content: center; min-height: 48px; margin-top: 6px; background: #c4d849; color: #1c2a2a; font-size: 12px; font-weight: 700; }
 }

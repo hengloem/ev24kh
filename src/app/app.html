@@ -15,11 +15,11 @@
         <a class="call-link" href="tel:+85512345678"><span class="phone-icon">⌕</span> +855 12 345 678</a>
         <button class="theme-toggle" type="button" [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'" (click)="toggleTheme()">{{ theme() === 'dark' ? '☀' : '☾' }}</button>
         <a class="button button-small button-light" href="#booking">Book a ride <span>↗</span></a>
-        <button class="menu-button" type="button" aria-label="Toggle menu" (click)="menuOpen.set(!menuOpen())">☰</button>
+        <button class="menu-button" type="button" aria-controls="mobile-nav" [attr.aria-expanded]="menuOpen()" [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'" (click)="menuOpen.set(!menuOpen())">{{ menuOpen() ? '✕' : '☰' }}</button>
       </div>
     </div>
     @if (menuOpen()) {
-      <nav class="mobile-nav container" aria-label="Mobile navigation">
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
         <a href="#routes" (click)="menuOpen.set(false)">Routes</a>
         <a href="#services" (click)="menuOpen.set(false)">Services</a>
         <a href="#drivers" (click)="menuOpen.set(false)">For drivers</a>
